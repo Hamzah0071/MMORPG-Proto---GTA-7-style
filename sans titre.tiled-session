@@ -3,11 +3,31 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "asset/tuilles/mape.tmx",
+    "activeFile": "asset/mapes/mape.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
     "fileStates": {
+        "asset/mapes/mape.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 8,
+            "viewCenter": {
+                "x": 1037,
+                "y": 1657
+            }
+        },
+        "asset/mapes/tuille1.tsx": {
+            "scaleInDock": 1
+        },
+        "asset/mapes/tuille2.tsx": {
+            "scaleInDock": 1
+        },
+        "asset/mapes/tuille3.tsx": {
+            "scaleInDock": 1
+        },
+        "asset/mapes/tuille4.tsx": {
+            "scaleInDock": 1
+        },
         "asset/tuilles/mape.tmx": {
             "scale": 0.75,
             "selectedLayer": 6,
@@ -74,16 +94,17 @@
     "map.lastUsedFormat": "tmx",
     "map.width": 60,
     "openFiles": [
-        "asset/tuilles/mape.tmx",
         "asset/tuilles/tuille1.tsx",
         "asset/tuilles/tuille2.tsx",
-        "asset/tuilles/tuille3.tsx"
+        "asset/tuilles/tuille3.tsx",
+        "asset/mapes/mape.tmx"
     ],
     "project": "sans titre.tiled-project",
     "recentFiles": [
-        "asset/tuilles/tuille3.tsx",
-        "asset/tuilles/tuille2.tsx",
         "asset/tuilles/tuille1.tsx",
+        "asset/tuilles/tuille2.tsx",
+        "asset/tuilles/tuille3.tsx",
+        "asset/mapes/mape.tmx",
         "asset/tuilles/mape.tmx",
         "asset/tuilles/tuille4.tsx",
         "asset/tuilles/tuille5.tsx",
@@ -91,8 +112,7 @@
         "tuille2.tsx",
         "tuille4.tsx",
         "tuille3.tsx",
-        "tuille5.tsx",
-        "tuille6.tsx"
+        "tuille5.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.transparentColor": "#000000",

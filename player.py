@@ -8,15 +8,20 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.position = [x, y]
         self.speed = 3
-
-        # Animations adaptées Pipoya : 4 frames/dir, rows: down(0), left(32), right(64), up(96)
+        
+        # PV du joueur
+        self.max_health = 100
+        self.health = 100
+        
+        # Animations corrigées pour Pipoya (4 frames par direction)
+        # Rows: down(0), left(32), right(64), up(96)
         self.animations = {
             'down':  [self.get_image(i * 32, 0) for i in range(4)],
             'left':  [self.get_image(i * 32, 32) for i in range(4)],
             'right': [self.get_image(i * 32, 64) for i in range(4)],
             'up':    [self.get_image(i * 32, 96) for i in range(4)],
-
-            # Attacks réutilisent walk (proto) - plus tard vraie anim
+            
+            # Attacks (utilisent les mêmes frames pour l'instant, mais peuvent être personnalisées)
             'attack_down':  [self.get_image(i * 32, 0) for i in range(4)],
             'attack_left':  [self.get_image(i * 32, 32) for i in range(4)],
             'attack_right': [self.get_image(i * 32, 64) for i in range(4)],
@@ -29,10 +34,10 @@ class Player(pygame.sprite.Sprite):
         self.direction = 'down'
         self.frame_index = 0
         self.animation_timer = 0
-        self.animation_speed = 150  # ms, adapté 4 frames
+        self.animation_speed = 150  # ms
         self.moving = False
 
-        # Attaque (réutilise walk, cooldown OK)
+        # Attaque
         self.is_attacking = False
         self.attack_cooldown = 600
         self.last_attack_time = 0
@@ -57,7 +62,7 @@ class Player(pygame.sprite.Sprite):
             self.frame_index = 0
             self.animation_timer = now
             self.last_attack_time = now
-            self.animation_speed = 80  # Plus rapide en attaque !
+            self.animation_speed = 80  # Plus rapide en attaque
 
     def update(self):
         self.rect.topleft = self.position
