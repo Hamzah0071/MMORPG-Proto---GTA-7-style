@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="26">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="32">
  <tileset firstgid="1" source="tuille2.tsx"/>
  <tileset firstgid="901" source="tuille1.tsx"/>
  <tileset firstgid="1801" source="tuille3.tsx"/>
@@ -361,6 +361,12 @@
   <object id="1" name="player" x="117.333" y="86.6667">
    <point/>
   </object>
+  <object id="26" name="pnj" x="846.596" y="543.439">
+   <point/>
+  </object>
+  <object id="27" name="pnj" x="1459.65" y="199.86">
+   <point/>
+  </object>
   <object id="2" type="collision" x="0" y="0" width="28" height="1281.33"/>
   <object id="3" type="collision" x="26.6667" y="1250.67" width="1890.67" height="25.3333"/>
   <object id="4" type="collision" x="1888" y="-1.33333" width="21.3333" height="1272"/>
@@ -381,6 +387,18 @@
   <object id="23" type="collision" x="328" y="1070.67" width="38.6667" height="48"/>
   <object id="24" type="collision" x="421.333" y="992" width="72" height="30.6667"/>
   <object id="25" type="collision" x="740" y="1057.33" width="24" height="22.6667"/>
+  <object id="28" name="enemis" x="469.333" y="318.877">
+   <point/>
+  </object>
+  <object id="29" name="enemis" x="1273.26" y="453.614">
+   <point/>
+  </object>
+  <object id="30" name="enemis" x="1659.51" y="1015.02">
+   <point/>
+  </object>
+  <object id="31" name="enemis" x="545.684" y="896">
+   <point/>
+  </object>
  </objectgroup>
  <layer id="10" name="autre" width="60" height="40">
   <data encoding="csv">
