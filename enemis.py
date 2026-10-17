@@ -2,9 +2,9 @@ import pygame
 import math
 
 class Enemy(pygame.sprite.Sprite):
-    """Classe pour les ennemis avec IA de détection et poursuite."""
+    """Classe pour les ennemis avec IA de détection, poursuite et aspiration d'âme."""
     
-    def __init__(self, x, y, sprite_path="player/player1.png", sprite_size=32):
+    def __init__(self, x, y, sprite_path="player/boss.png", sprite_size=32):
         super().__init__()
         
         # Chargement du sprite
@@ -26,16 +26,15 @@ class Enemy(pygame.sprite.Sprite):
         self.old_position = self.position.copy()
         
         # Stats de l'ennemi
-        self.speed = 0.5
-
+        self.speed = 0.8  # Vitesse de poursuite
         self.health = 30
         self.max_health = 30
         
         # IA - Détection et poursuite
-        self.detection_radius = 9 * 32  # 9px en pixels (9 * 32 pour la grille)
+        self.detection_radius = 9 * 32  # 9 tuiles en pixels
         self.spawn_x = x  # Position d'origine
         self.spawn_y = y
-        self.max_distance_from_spawn = 50 * 32  # 50px en pixels
+        self.max_distance_from_spawn = 50 * 32  # 50 tuiles en pixels
         self.is_pursuing = False
         self.pursue_timer = 0
         
@@ -43,6 +42,13 @@ class Enemy(pygame.sprite.Sprite):
         self.move_timer = 0
         self.direction = 'idle'
         self.random_move_interval = 1500  # ms
+        
+        # Aspiration d'âme (attaque)
+        self.soul_drain_range = 32  # Distance pour aspirer l'âme
+        self.soul_drain_damage = 2  # Dégâts par frame
+        self.soul_drain_cooldown = 500  # ms entre les attaques
+        self.last_drain_time = 0
+        self.is_draining = False
     
     def save_location(self):
         """Sauvegarde la position actuelle."""
@@ -85,6 +91,19 @@ class Enemy(pygame.sprite.Sprite):
             else:
                 self.direction = 'down' if dy > 0 else 'up'
     
+    def try_soul_drain(self, player):
+        """Essaie d'aspirer l'âme du joueur."""
+        distance = self.distance_to_player(player)
+        now = pygame.time.get_ticks()
+        
+        if distance < self.soul_drain_range and (now - self.last_drain_time > self.soul_drain_cooldown):
+            self.is_draining = True
+            self.last_drain_time = now
+            return self.soul_drain_damage
+        
+        self.is_draining = False
+        return 0
+    
     def random_walk(self):
         """Mouvement aléatoire quand l'ennemi n'est pas en poursuite."""
         now = pygame.time.get_ticks()
@@ -122,6 +141,9 @@ class Enemy(pygame.sprite.Sprite):
             self.is_pursuing = True
             self.pursue_timer = pygame.time.get_ticks()
             self.pursue_player(player)
+            
+            # Essayer d'aspirer l'âme
+            self.try_soul_drain(player)
         # Si l'ennemi était en poursuite mais le joueur s'éloigne trop du spawn
         elif distance_from_spawn >= self.max_distance_from_spawn:
             self.is_pursuing = False

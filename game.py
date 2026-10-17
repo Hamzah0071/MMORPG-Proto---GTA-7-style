@@ -3,9 +3,9 @@ import pytmx
 import pyscroll
 import sys
 from player import Player
-
 from enemis import Enemy
 from pnj import NPC
+from minimap_simple import SimpleMinimap
 
 class Game:
     def __init__(self):
@@ -31,6 +31,14 @@ class Game:
         self.map_data = pyscroll.data.TiledMapData(self.tmx_data)
         self.map_layer = pyscroll.orthographic.BufferedRenderer(self.map_data, self.screen.get_size())
         self.map_layer.zoom = 2
+        
+        # Dimensions de la carte pour la minimap
+        self.map_width = self.tmx_data.width
+        self.map_height = self.tmx_data.height
+        self.tile_size = self.tmx_data.tilewidth
+        
+        # Initialiser la minimap
+        self.minimap = SimpleMinimap(self.map_width, self.map_height, self.tile_size, minimap_size=150, position=(10, 10))
 
         self.walls = []
         for obj in self.tmx_data.objects:
@@ -174,6 +182,10 @@ class Game:
             self.game_state = "GAMEOVER"
             return
 
+        # Mettre à jour la minimap - découvrir les tuiles autour du joueur
+        self.minimap.discover_around_player(self.player.rect.centerx, self.player.rect.centery, discovery_radius_tiles=5)
+        self.minimap.update(self.player.rect.centerx, self.player.rect.centery)
+
         self.player.update()
         for enemy in self.enemies:
             enemy.update(self.player)
@@ -273,6 +285,10 @@ class Game:
                 self.group.center(self.player.rect.center)
                 self.group.draw(self.screen)
                 self.draw_ui()
+                
+                # Dessiner la minimap
+                self.minimap.draw(self.screen)
+                
                 pygame.display.flip()
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:

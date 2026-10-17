@@ -2,9 +2,9 @@ import pygame
 import math
 
 class NPC(pygame.sprite.Sprite):
-    """Classe pour les PNJ (Personnages Non Joueurs) avec dialogues."""
+    """Classe pour les PNJ (Personnages Non Joueurs) avec dialogues enrichis."""
     
-    def __init__(self, x, y, name="PNJ", sprite_path="player/player1.png", sprite_size=32, dialogue="Bonjour!"):
+    def __init__(self, x, y, name="PNJ", sprite_path="player/paul.png", sprite_size=32, dialogue="Bonjour!"):
         super().__init__()
         
         # Chargement du sprite
@@ -28,9 +28,18 @@ class NPC(pygame.sprite.Sprite):
         # Infos du PNJ
         self.name = name
         self.dialogue = dialogue  # Texte que le PNJ va dire
-        self.interaction_radius = 5 * 32  # Rayon d'interaction (5px en pixels)
+        self.interaction_radius = 5 * 32  # Rayon d'interaction (5 tuiles en pixels)
         self.is_interacting = False
         self.direction = 'down'
+        
+        # Dialogues multiples
+        self.dialogue_list = [dialogue]  # Liste de dialogues possibles
+        self.current_dialogue_index = 0
+        
+        # Animation d'interaction
+        self.is_talking = False
+        self.talk_timer = 0
+        self.talk_duration = 3000  # ms
     
     def save_location(self):
         """Sauvegarde la position actuelle."""
@@ -53,17 +62,42 @@ class NPC(pygame.sprite.Sprite):
         return self.distance_to_player(player) < self.interaction_radius
     
     def get_dialogue(self):
-        """Retourne le dialogue du PNJ."""
-        return self.dialogue
+        """Retourne le dialogue actuel du PNJ."""
+        return self.dialogue_list[self.current_dialogue_index % len(self.dialogue_list)]
+    
+    def next_dialogue(self):
+        """Passe au dialogue suivant."""
+        self.current_dialogue_index += 1
+        return self.get_dialogue()
     
     def set_dialogue(self, new_dialogue):
         """Change le dialogue du PNJ."""
-        self.dialogue = new_dialogue
+        if isinstance(new_dialogue, list):
+            self.dialogue_list = new_dialogue
+            self.current_dialogue_index = 0
+        else:
+            self.dialogue_list = [new_dialogue]
+            self.current_dialogue_index = 0
+        self.dialogue = self.dialogue_list[0]
+    
+    def set_talking(self, is_talking):
+        """Marque le PNJ comme en train de parler."""
+        self.is_talking = is_talking
+        if is_talking:
+            self.talk_timer = pygame.time.get_ticks()
+    
+    def is_talking_finished(self):
+        """Vérifie si le PNJ a fini de parler."""
+        if self.is_talking:
+            elapsed = pygame.time.get_ticks() - self.talk_timer
+            return elapsed > self.talk_duration
+        return False
     
     def update(self, player=None):
         """Met à jour le PNJ."""
         self.rect.topleft = self.position
         self.feet.midbottom = self.rect.midbottom
         
-        # Les PNJ ne se déplacent pas pour l'instant (statiques)
-        # Vous pouvez ajouter des animations ou des mouvements ici si nécessaire
+        # Vérifier si le dialogue est terminé
+        if self.is_talking and self.is_talking_finished():
+            self.is_talking = False
